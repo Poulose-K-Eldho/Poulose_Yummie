@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if category %}
+<div>
+    <div>
+        <p><a href="{% url 'YummieApp:allProdCat' %}">Our Product Collections</a> </p>
+    </div>
+</div>
+{% endif %}
+{% block title %}
+{% if category %}
+{{category.name}}
+{% else %}
+See our products
+{% endif %}
+{% endblock %}
+<div>
+    {% if category %}
+    <img src="{{category.img.url}}" alt="{{category.name}}">
+</div><br>
+<div>
+    <h1>{{category.name}}</h1>
+</div>
+{% else %}
+<div><img src="{% static 'img/banner.png' %}" alt=""></div>
+<div>
+    <h1>Yummie</h1>
+
+</div>
+{% endif %}
+<div class="container">
+    <div>
+        {% for product in products %}
+        <div class="col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card" style="width:18rem;">
+                <a href="{{product.get_url}}"><img  class="card-img-top" src="{{product.img.url}}" alt=""></a>
+                <div>
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div>
+
+        {% for pg in products.paginator.page_range %}
+        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}activate{% endif %}">{{pg}}</a>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
